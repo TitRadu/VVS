@@ -1,6 +1,16 @@
 package com.example.vvsdemo;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Piese {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
+
     private String numePiesa;
     private String numeProducator;
     private double pretBucata;
@@ -37,4 +47,7 @@ public class Piese {
         this.pretBucata = pretBucata;
     }
 
+    public Long getId() {
+        return id;
+    }
 }

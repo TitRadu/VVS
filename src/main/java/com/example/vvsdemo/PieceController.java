@@ -1,5 +1,6 @@
 package com.example.vvsdemo;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -7,37 +8,41 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(value = "/pieces")
+@RequestMapping(value = "/Pieces")
 public class PieceController {
-    private List<Piese> piese;
+    private PiecesRepository piecesRepository;
 
-    public PieceController(){
-        piese = new ArrayList<Piese>();
-
-        piese.add(new Piese("Motor electric","Continental",500));
-        piese.add(new Piese("Motor Diesel","Bosch",550));
-        piese.add(new Piese("Motor Otto","General Motors",450));
+    @Autowired
+    public PieceController(PiecesRepository piecesRepository){
+        this.piecesRepository = piecesRepository;
 
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public List<Piese> getAllPieces(){
-        return piese;
+        return piecesRepository.findAll();
 
     }
 
     @RequestMapping(value = "/maiIeftinDecat/{pret}", method = RequestMethod.GET)
     public List<Piese> getPieceByPrice(@PathVariable double pret){
-        return piese.stream().filter(x-> x.getPretBucata() <= pret)
-                .collect(Collectors.toList());
+       return piecesRepository.findByPretBucataLessThan(pret);
 
     }
 
     @RequestMapping(value = "/add", method=RequestMethod.POST)
     public List<Piese> addPiece(@RequestBody Piese piesa){
-        piese.add(piesa);
+        piecesRepository.save(piesa);
 
-        return piese;
+        return piecesRepository.findAll();
+
+    }
+
+    @RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
+    public List<Piese> remove(@PathVariable long id){
+        piecesRepository.deleteById(id);
+
+        return piecesRepository.findAll();
 
     }
 
