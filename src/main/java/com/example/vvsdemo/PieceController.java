@@ -3,9 +3,7 @@ package com.example.vvsdemo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/Pieces")
@@ -38,7 +36,7 @@ public class PieceController {
 
     }
 
-    @RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "delete/{id}", method = RequestMethod.POST)
     public List<Piese> remove(@PathVariable long id){
         piecesRepository.deleteById(id);
 

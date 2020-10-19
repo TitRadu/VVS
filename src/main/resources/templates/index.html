@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="https://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>AutoStore App</title>
+    <link th:if="${mode == 'development'}" rel="stylesheet" href="../static/bootstrap.css" th:href="@{/bootstrap.css}"/>
+    <link th:if="${mode == 'production'}" rel="stylesheet" href="../static/bootstrap.min.css" th:href="@{/bootstrap.min.css}"/>
+    <script type="text/javascript" src="/static/angular.min.js" th:src="@{angular.min.js}"></script>
+    <script type="text/javascript" src="/static/app/app.module.js" th:src="@{app/app.module.js}"></script>
+    <script type="text/javascript" src="/static/app/pieces.controller.js" th:src="@{app/pieces.controller.js}"></script>
+</head>
+<body ng-app="app" ng-controller="PiecesController as vm">
+<header>
+    <nav class="navbar navbar-default" style="background-color: #f0ad4e">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="a">AutoStore Demo</a>
+            </div>
+            <p class="navbar-text navbar-right" th:text="'Signed in as ' + ${username}" style="margin-right: 10px">Signed in as Anonymous</p>
+        </div>
+    </nav>
+</header>
+
+<div>
+    <div class="row">
+        <div class="col-lg-offset-2 col-lg-8">
+            <div class="btn-group" role="group">
+                <button ng-click="vm.getAll()" type="button" class="btn btn-default">All</button>
+                <button ng-click="vm.getAffordable()" type="button" class="btn btn-default">Affordable</button>
+
+            </div>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Piece</th>
+                    <th>Producer</th>
+                    <th>Price</th>
+                    <th style="width:90px"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="piece in vm.pieces">
+                    <td>{{piece.numePiesa}}</td>
+                    <td>{{piece.numeProducator}}</td>
+                    <td>{{piece.pretBucata}}</td>
+                    <td>
+                        <button class="btn btn-danger" ng-click="vm.deletePiece(piece.id)">Delete</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<footer class="footer" style="position:absolute; bottom:0;background-color: #f0ad4e">
+    <div class="container">
+        <p th:text="${datetime}" class="text-muted">Page was rendered today!</p>
+    </div>
+
+</footer>
+
+</body>
+</html>
