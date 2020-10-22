@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Piece</title>
+    <link rel="stylesheet" href="../static/bootstrap.css" th:href="@{/bootstrap.css}"/>
+
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-default" style="background-color: #f0ad4e">
+            <div class="container-fluid">
+               <div class="navbar-header">
+                  <a class="navbar-brand" href="a">AutoStore Demo</a>
+             </div>
+              <p class="navbar-text navbar-right" th:text="'Signed in as ' + ${username}" style="margin-right: 10px">Signed in as Anonymous</p>
+            </div>
+        </nav>
+    </header>
+    <div align="center">
+        <h1>Add New Piece</h1>
+        <br/>
+        <form action="#" th:action="@{/save}" th:object="${piece}" method="post">
+            <table border="0" cellpadding="10">
+                <tr>
+                    <td>Piece name:</td>
+                    <td><input type="text" th:field="*{pieceName}"/></td>
+                </tr>
+                <tr>
+                    <td>Producer:</td>
+                    <td><input type="text" th:field="*{producer}"/></td>
+                </tr>
+                <tr>
+                    <td>Price:</td>
+                    <td><input type="text" th:field="*{price}"/></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><button type="submit">Save</button></td>
+                </tr>
+
+            </table>
+        </form>
+    </div>
+    <footer class="footer" style="position:absolute; bottom:0;background-color: #f0ad4e">
+        <div class="container">
+            <p th:text="${datetime}" class="text-muted">Page was rendered today!</p>
+        </div>
+    </footer>
+
+</body>
+</html>

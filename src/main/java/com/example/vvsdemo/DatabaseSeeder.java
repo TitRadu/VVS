@@ -19,11 +19,11 @@ public class DatabaseSeeder  implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
-        List<Piese> piese = new ArrayList<Piese>();
+        List<Piece> piese = new ArrayList<Piece>();
 
-        piese.add(new Piese("Motor electric","Continental",500));
-        piese.add(new Piese("Motor Diesel","Bosch",550));
-        piese.add(new Piese("Motor Otto","General Motors",450));
+        piese.add(new Piece("Motor electric","Ford",500));
+        piese.add(new Piece("Motor Diesel","Bosch",550));
+        piese.add(new Piece("Motor Otto","General Motors",450));
 
         piecesRepository.saveAll(piese);
     }

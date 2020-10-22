@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="https://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>AutoStore App</title>
@@ -20,14 +20,17 @@
         </div>
     </nav>
 </header>
-
+<div align="center">
+    <a href="new">Create New Product</a>
+    <br/><br/>
+</div>
 <div>
     <div class="row">
         <div class="col-lg-offset-2 col-lg-8">
             <div class="btn-group" role="group">
                 <button ng-click="vm.getAll()" type="button" class="btn btn-default">All</button>
                 <button ng-click="vm.getAffordable()" type="button" class="btn btn-default">Affordable</button>
-
+                <input type="text" class="btn btn-default" th:id="affordablePrice"/>
             </div>
 
             <table class="table">
@@ -41,9 +44,9 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="piece in vm.pieces">
-                    <td>{{piece.numePiesa}}</td>
-                    <td>{{piece.numeProducator}}</td>
-                    <td>{{piece.pretBucata}}</td>
+                    <td>{{piece.pieceName}}</td>
+                    <td>{{piece.producer}}</td>
+                    <td>{{piece.price}}</td>
                     <td>
                         <button class="btn btn-danger" ng-click="vm.deletePiece(piece.id)">Delete</button>
                     </td>

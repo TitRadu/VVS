@@ -6,8 +6,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PiecesRepository extends JpaRepository<Piese, Long> {
-    List<Piese> findByPretBucataLessThan(double price);
+public interface PiecesRepository extends JpaRepository<Piece, Long> {
+    List<Piece> findByPriceLessThan(double price);
 
 
 }
