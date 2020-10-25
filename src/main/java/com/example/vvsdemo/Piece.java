@@ -17,6 +17,13 @@ public class Piece {
 
     public Piece(){}
 
+   /* public Piece(Long id, String pieceName, String producer, double price) {
+        this.id =id;
+        this.pieceName = pieceName;
+        this.producer = producer;
+        this.price = price;
+    }*/
+
     public Piece(String pieceName, String producer, double price) {
         this.pieceName = pieceName;
         this.producer = producer;
