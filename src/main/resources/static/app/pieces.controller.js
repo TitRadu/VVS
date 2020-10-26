@@ -11,20 +11,19 @@
         var vm = this;
 
         vm.pieces = [];
-        vm.getAll = getAll;
-        vm.getAffordable = getAffordable;
-        vm.deletePiece = deletePiece;
-        vm.addPiece = addPiece;
+        vm.listAllPieces = listAllPieces;
+        vm.listFilterPieces = listFilterPieces;
+        vm.removePiece = removePiece;
 
 
         init();
 
         function init(){
-            getAll();
+            listAllPieces();
 
         }
 
-        function getAll(){
+        function listAllPieces(){
             var url="all";
             var piecesPromise = $http.get(url);
             piecesPromise.then(function(response){
@@ -34,7 +33,7 @@
 
         }
 
-        function getAffordable(){
+        function listFilterPieces(){
             var price;
             price = document.getElementById("affordablePrice").value;
             var url="lessThan/" + price;
@@ -46,18 +45,9 @@
 
         }
 
-        function deletePiece(id){
-            var url="delete/"+id;
-            $http.post(url).then(function(response){
-                vm.pieces = response.data;
-
-            });
-
-        }
-
-        function addPiece(){
-            var url="save";
-            $http.post(url).then(function(response){
+        function removePiece(id){
+            var url="remove/"+id;
+            $http.delete(url).then(function(response){
                 vm.pieces = response.data;
 
             });

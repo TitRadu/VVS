@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class RestControllerTest {
+    @Autowired
     private PiecesRepository piecesRepository;
 
     @Autowired
@@ -34,29 +35,55 @@ public class RestControllerTest {
     @BeforeEach
     public void initServerURL(){
         this.serverUrl = "http://localhost:" + port;
+        piecesRepository.deleteAll();
 
     }
+
+    @Test
+    public void whenGetAllPiecesWithEmptyDB_thenReturn200AndCorrectResponse(){
+        ResponseEntity<Piece[]> response = getPieceResponseEntity();
+        assertEquals(HttpStatus.valueOf(200),response.getStatusCode());
+        assertEquals(0,response.getBody().length);
+
+    }
+
 
 
     @Test
-    public void test(){
-        Piece pieces[] = new Piece[3];
+    public void whenGetAllPieces_thenReturn200AndCorrectResponse(){
+        List<Piece> pieces = new ArrayList<>();
 
-        pieces[0] = new Piece("Motor electric","Ford",500);
-        pieces[1] = new Piece("Motor Diesel","Bosch",550);
-        pieces[2] = new Piece("Motor Otto","General Motors",450);
+        pieces.add(new Piece("Motor electric","Ford",500));
+        pieces.add(new Piece("Motor Diesel","Bosch",550));
+        pieces.add(new Piece("Motor Otto","General Motors",450));
+        piecesRepository.saveAll(pieces);
 
-        ResponseEntity<Piece[]> response = getPieceResponseEntity("");
+        ResponseEntity<Piece[]> response = getPieceResponseEntity();
         assertEquals(HttpStatus.valueOf(200),response.getStatusCode());
-        assertEquals(pieces,response.getBody());
+        assertEquals(3,response.getBody().length);
+
+    }
+
+    public void whenGetFilterPiecesWithoutInput_thenReturn404(){
+
+
+    }
+
+    private ResponseEntity<Piece[]> getPieceResponseEntity(){
+        String endpointURL = UriComponentsBuilder.fromHttpUrl(serverUrl)
+                .path("all")
+                .toUriString();
+
+        return testRestTemplate.getForEntity(endpointURL,Piece[].class);
 
     }
 
 
-    private ResponseEntity<Piece[]> getPieceResponseEntity(String string){
+    private ResponseEntity<Piece[]> getPieceResponseEntityWithParam(String pathVariable){
         String endpointURL = UriComponentsBuilder.fromHttpUrl(serverUrl)
-                .path("all").
-                toUriString();
+                .path("all")
+                .query(pathVariable)
+                .toUriString();
 
         return testRestTemplate.getForEntity(endpointURL,Piece[].class);
 

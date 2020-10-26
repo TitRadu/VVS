@@ -8,39 +8,31 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/")
 public class PieceController {
-    private PiecesRepository piecesRepository;
+    private PieceService pieceService;
 
     @Autowired
-    public PieceController(PiecesRepository piecesRepository){
-        this.piecesRepository = piecesRepository;
+    public PieceController(PieceService pieceService){
+        this.pieceService = pieceService;
 
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public List<Piece> getAllPieces(){
-        return piecesRepository.findAll();
+    public List<Piece> listAllPieces(){
+        return pieceService.listAll();
 
     }
 
-    @RequestMapping(value = "/lessThan/{pret}", method = RequestMethod.GET)
-    public List<Piece> getPieceByPrice(@PathVariable double pret){
-       return piecesRepository.findByPriceLessThan(pret);
+    @RequestMapping(value = "/lessThan/{price}", method = RequestMethod.GET)
+    public List<Piece> listFilterPieces(@PathVariable double price){
+       return pieceService.listFilter(price);
 
     }
 
-    @RequestMapping(value = "/add", method=RequestMethod.POST)
-    public List<Piece> addPiece(@RequestBody Piece piece){
-        piecesRepository.save(piece);
+    @RequestMapping(value = "remove/{id}", method = RequestMethod.DELETE)
+    public List<Piece> removePiece(@PathVariable long id){
+        pieceService.remove(id);
 
-        return piecesRepository.findAll();
-
-    }
-
-    @RequestMapping(value = "delete/{id}", method = RequestMethod.POST)
-    public List<Piece> remove(@PathVariable long id){
-        piecesRepository.deleteById(id);
-
-        return piecesRepository.findAll();
+        return pieceService.listAll();
 
     }
 

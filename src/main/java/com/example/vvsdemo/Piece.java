@@ -8,7 +8,7 @@ import javax.persistence.Id;
 @Entity
 public class Piece {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String pieceName;
@@ -17,12 +17,12 @@ public class Piece {
 
     public Piece(){}
 
-   /* public Piece(Long id, String pieceName, String producer, double price) {
+    public Piece(Long id, String pieceName, String producer, double price) {
         this.id =id;
         this.pieceName = pieceName;
         this.producer = producer;
         this.price = price;
-    }*/
+    }
 
     public Piece(String pieceName, String producer, double price) {
         this.pieceName = pieceName;

@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>AutoStore App</title>
-    <link th:if="${mode == 'development'}" rel="stylesheet" href="../static/bootstrap.css" th:href="@{/bootstrap.css}"/>
-    <link th:if="${mode == 'production'}" rel="stylesheet" href="../static/bootstrap.min.css" th:href="@{/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="../static/bootstrap.css" th:href="@{/bootstrap.css}"/>
     <script type="text/javascript" src="/static/angular.min.js" th:src="@{angular.min.js}"></script>
     <script type="text/javascript" src="/static/app/app.module.js" th:src="@{app/app.module.js}"></script>
     <script type="text/javascript" src="/static/app/pieces.controller.js" th:src="@{app/pieces.controller.js}"></script>
@@ -28,8 +27,8 @@
     <div class="row">
         <div class="col-lg-offset-2 col-lg-8">
             <div class="btn-group" role="group">
-                <button ng-click="vm.getAll()" type="button" class="btn btn-default">All</button>
-                <button ng-click="vm.getAffordable()" type="button" class="btn btn-default">Affordable</button>
+                <button ng-click="vm.listAllPieces()" type="button" class="btn btn-default">All</button>
+                <button ng-click="vm.listFilterPieces()" type="button" class="btn btn-default">Affordable</button>
                 <input type="text" class="btn btn-default" th:id="affordablePrice"/>
             </div>
 
@@ -44,11 +43,12 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="piece in vm.pieces">
+                    <td>{{piece.id}}</td>>
                     <td>{{piece.pieceName}}</td>
                     <td>{{piece.producer}}</td>
                     <td>{{piece.price}}</td>
                     <td>
-                        <button class="btn btn-danger" ng-click="vm.deletePiece(piece.id)">Delete</button>
+                        <button class="btn btn-danger" ng-click="vm.removePiece(piece.id)">Delete</button>
                     </td>
                 </tr>
                 </tbody>

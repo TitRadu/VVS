@@ -1,5 +1,6 @@
 package com.example.vvsdemo;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -11,10 +12,11 @@ import java.util.Date;
 
 @Controller
 public class ViewController {
-    private PiecesRepository piecesRepository;
+    private PieceService pieceService;
 
-    public ViewController(PiecesRepository piecesRepository){
-        this.piecesRepository = piecesRepository;
+    @Autowired
+    public ViewController(PieceService pieceService){
+        this.pieceService = pieceService;
 
     }
 
@@ -22,7 +24,6 @@ public class ViewController {
     public String index(Model model){
         model.addAttribute("datetime",new Date());
         model.addAttribute("username","Tit Radu-Dorin");
-        model.addAttribute("mode","production");
 
         return "index";
 
@@ -37,9 +38,9 @@ public class ViewController {
         return "new_piece";
     }
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addPiece(@ModelAttribute("piece") Piece piece){
-        piecesRepository.save(piece);
+        pieceService.add(piece);
 
         return "redirect:/";
     }
