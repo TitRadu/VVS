@@ -38,9 +38,9 @@ public class PieceTests {
     public void testFindByPriceLessThanWhenPriceIsLessThanAll(){
         List<Piece> pieces = new ArrayList<>();
 
-        pieces.add(new Piece("Motor electric","Ford",500));
-        pieces.add(new Piece("Motor Diesel","Bosch",550));
-        pieces.add(new Piece("Motor Otto","General Motors",450));
+        pieces.add(new Piece("Motor electric","Ford",500.0));
+        pieces.add(new Piece("Motor Diesel","Bosch",550.0));
+        pieces.add(new Piece("Motor Otto","General Motors",450.0));
 
         piecesRepository.saveAll(pieces);
 
@@ -56,9 +56,9 @@ public class PieceTests {
     public void testFindByPriceLessThanWhenPriceIsBigThanAll(){
         List<Piece> pieces = new ArrayList<>();
 
-        pieces.add(new Piece("Motor electric","Ford",500));
-        pieces.add(new Piece("Motor Diesel","Bosch",550));
-        pieces.add(new Piece("Motor Otto","General Motors",450));
+        pieces.add(new Piece("Motor electric","Ford",500.0));
+        pieces.add(new Piece("Motor Diesel","Bosch",550.0));
+        pieces.add(new Piece("Motor Otto","General Motors",450.0));
 
         piecesRepository.saveAll(pieces);
 
@@ -66,7 +66,7 @@ public class PieceTests {
         List<Piece> piecesList = null;
         piecesList = piecesRepository.findByPriceLessThan(price);
 
-        assertEquals(3,piecesList.size());
+        assertTrue((pieces.containsAll(piecesList) && piecesList.containsAll(pieces)));
 
     }
 
@@ -74,9 +74,9 @@ public class PieceTests {
     public void testFindByPriceLessThanWhenPriceIsInDataBase(){
         List<Piece> pieces = new ArrayList<>();
 
-        pieces.add(new Piece("Motor electric","Ford",500));
-        pieces.add(new Piece("Motor Diesel","Bosch",550));
-        pieces.add(new Piece("Motor Otto","General Motors",450));
+        pieces.add(new Piece("Motor electric","Ford",500.0));
+        pieces.add(new Piece("Motor Diesel","Bosch",550.0));
+        pieces.add(new Piece("Motor Otto","General Motors",450.0));
 
         piecesRepository.saveAll(pieces);
 
@@ -84,7 +84,9 @@ public class PieceTests {
         List<Piece> piecesList = null;
         piecesList = piecesRepository.findByPriceLessThan(price);
 
-        assertEquals(1,piecesList.size());
+        pieces.remove(0);
+        pieces.remove(0);
+        assertTrue((pieces.containsAll(piecesList) && piecesList.containsAll(pieces)));
 
     }
 
@@ -92,17 +94,19 @@ public class PieceTests {
     public void testDeletePieceByIdWhenIdExist(){
         List<Piece> pieces = new ArrayList<>();
 
-        pieces.add(new Piece("Motor electric","Ford",500));
-        pieces.add(new Piece("Motor Diesel","Bosch",550));
-        pieces.add(new Piece("Motor Otto","General Motors",450));
+        pieces.add(new Piece("Motor electric","Ford",500.0));
+        pieces.add(new Piece("Motor Diesel","Bosch",550.0));
+        pieces.add(new Piece("Motor Otto","General Motors",450.0));
 
         piecesRepository.saveAll(pieces);
 
-        Long id = new Long(17);
+        Long id = pieces.get(0).getId();
         piecesRepository.deleteById(id);
+        pieces.remove(0);
 
-        assertEquals(Optional.empty(),piecesRepository.findById(id));
-        assertEquals(2,piecesRepository.findAll().size());
+        List<Piece> piecesList = piecesRepository.findAll();
+
+        assertTrue((pieces.containsAll(piecesList) && piecesList.containsAll(pieces)));
 
     }
 
@@ -110,9 +114,9 @@ public class PieceTests {
     public void testDeletePieceByIdWhenIdNotExist(){
         List<Piece> pieces = new ArrayList<>();
 
-        pieces.add(new Piece("Motor electric","Ford",500));
-        pieces.add(new Piece("Motor Diesel","Bosch",550));
-        pieces.add(new Piece("Motor Otto","General Motors",450));
+        pieces.add(new Piece("Motor electric","Ford",500.0));
+        pieces.add(new Piece("Motor Diesel","Bosch",550.0));
+        pieces.add(new Piece("Motor Otto","General Motors",450.0));
 
         piecesRepository.saveAll(pieces);
 

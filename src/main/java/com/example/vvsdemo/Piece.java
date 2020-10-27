@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Objects;
 
 @Entity
 public class Piece {
@@ -13,12 +14,13 @@ public class Piece {
 
     private String pieceName;
     private String producer;
-    private double price;
+    private Double price;
 
-    public Piece(){}
+    public Piece() {
+    }
 
     public Piece(Long id, String pieceName, String producer, double price) {
-        this.id =id;
+        this.id = id;
         this.pieceName = pieceName;
         this.producer = producer;
         this.price = price;
@@ -54,11 +56,28 @@ public class Piece {
         this.producer = producer;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Piece piece = (Piece) o;
+        return id != null && Double.compare(piece.price, price) == 0 &&
+                Objects.equals(id, piece.id) &&
+                Objects.equals(pieceName, piece.pieceName) &&
+                Objects.equals(producer, piece.producer);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, pieceName, producer, price);
+    }
+
 }
