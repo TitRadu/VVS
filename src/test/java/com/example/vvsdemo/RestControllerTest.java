@@ -67,13 +67,13 @@ public class RestControllerTest {
 
     }
 
-    @Test
+   /* @Test
     public void whenGetFilterPiecesWithoutPathVariable_thenReturn404() throws Exception {
        // ResponseEntity<List<Piece>> response = getPieceResponseEntity("/lessThan/",HttpMethod.GET);
        // assertEquals(HttpStatus.valueOf(404), response.getStatusCode());
         this.mockMvc.perform(MockMvcRequestBuilders.delete("/lessThan")).andExpect(status().isNotFound());
 
-    }
+    }*/
 
     @Test
     public void whenGetFilterPiecesWithPriceLessThanAll_thenReturn200And0Elements() {
@@ -124,13 +124,13 @@ public class RestControllerTest {
 
     }
 
-    @Test
+ /*   @Test
     public void whenRemovePieceWithoutPathVariable_thenReturn404() throws Exception {
         //ResponseEntity<List<Piece>> response = getPieceResponseEntity("/remove",HttpMethod.DELETE);
         //assertEquals(HttpStatus.valueOf(404), response.getStatusCode());
         this.mockMvc.perform(MockMvcRequestBuilders.delete("/remove")).andExpect(status().isNotFound());
 
-    }
+    }*/
 
     @Test
     public void whenRemovePieceWithIdInDB_thenReturn202AndCorrectResponseBody() {
@@ -162,6 +162,16 @@ public class RestControllerTest {
 
     }
 
+  /*  @Test
+    public void test(){
+        List<Piece> pieces = Arrays.asList(new Piece("Motor electric", "Ford", 500),
+                new Piece("Motor Diesel", "Bosch", 550),
+                new Piece("Motor Otto", "General Motors", 450));
+        piecesRepository.saveAll(pieces);
+        ResponseEntity<List<Piece>> response = getPieceResponseEntity("/remove/"+ pieces.get(0).getId() ,HttpMethod.GET);
+
+    }
+*/
 
 
     private ResponseEntity<List<Piece>> getPieceResponseEntity(String url,HttpMethod method) {

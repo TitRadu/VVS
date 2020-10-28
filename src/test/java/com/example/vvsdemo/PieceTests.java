@@ -8,7 +8,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,7 +23,29 @@ public class PieceTests {
     }
 
     @Test
-    public void testAddPieceWhenDBIsEmpty(){
+    public void testFindAllPiecesWhenDBIsEmpty(){
+        List<Piece> pieces = piecesRepository.findAll();
+        assertEquals(0,pieces.size());
+
+    }
+
+    @Test
+    public void testFindAllPiecesWhenDBIsNotEmpty(){
+        List<Piece> pieces = new ArrayList<>();
+
+        pieces.add(new Piece("Motor electric","Ford",500.0));
+        pieces.add(new Piece("Motor Diesel","Bosch",550.0));
+        pieces.add(new Piece("Motor Otto","General Motors",450.0));
+        piecesRepository.saveAll(pieces);
+
+        List<Piece> piecesList = piecesRepository.findAll();
+        assertTrue((pieces.containsAll(piecesList) && piecesList.containsAll(pieces)));
+
+    }
+
+
+    @Test
+    public void testSavePieceWhenDBIsEmpty(){
         Piece piece = new Piece("Ulei motor","Castrol",100.50);
         Piece addedPiece = null;
         addedPiece = piecesRepository.save(piece);
@@ -35,6 +56,23 @@ public class PieceTests {
     }
 
     @Test
+    public void testSavePieceWhenDBIsNotEmpty() {
+        List<Piece> pieces = new ArrayList<>();
+
+        pieces.add(new Piece("Motor electric","Ford",500.0));
+        pieces.add(new Piece("Motor Diesel","Bosch",550.0));
+        pieces.add(new Piece("Motor Otto","General Motors",450.0));
+        piecesRepository.saveAll(pieces);
+
+        Piece piece = new Piece("Ulei motor", "Castrol", 100.50);
+        pieces.add(piece);
+        piecesRepository.save(piece);
+        List<Piece> piecesList = piecesRepository.findAll();
+        assertTrue((pieces.containsAll(piecesList) && piecesList.containsAll(pieces)));
+
+    }
+
+        @Test
     public void testFindByPriceLessThanWhenPriceIsLessThanAll(){
         List<Piece> pieces = new ArrayList<>();
 
