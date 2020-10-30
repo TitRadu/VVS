@@ -4,49 +4,45 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.web.util.NestedServletException;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc
 public class RestControllerTest {
     @Autowired
     private PiecesRepository piecesRepository;
 
-    @Autowired
-    TestRestTemplate testRestTemplate;
+    @LocalServerPort
+    private int port;
 
-    @Autowired
-    private MockMvc mockMvc;
+    private String serverUrl;
+
+    private RestTemplate restTemplate = new RestTemplate();
 
     @BeforeEach
     public void initServerURL() {
         piecesRepository.deleteAll();
-
+        this.serverUrl = "http://localhost:" + port;
     }
 
     @Test
     public void whenGetAllPiecesWithEmptyDB_thenReturn200AndCorrectResponse() {
-        ResponseEntity<List<Piece>> response = getPieceResponseEntity("/all",HttpMethod.GET);
+        ResponseEntity<List<Piece>> response = executePieceRequest("/all", HttpMethod.GET);
         assertEquals(HttpStatus.valueOf(200), response.getStatusCode());
         assertEquals(0, response.getBody().size());
 
@@ -60,20 +56,18 @@ public class RestControllerTest {
                 new Piece("Motor Otto", "General Motors", 450));
         piecesRepository.saveAll(pieces);
 
-        ResponseEntity<List<Piece>> response = getPieceResponseEntity("/all", HttpMethod.GET);
+        ResponseEntity<List<Piece>> response = executePieceRequest("/all", HttpMethod.GET);
         assertEquals(HttpStatus.valueOf(200), response.getStatusCode());
         List<Piece> responsePiecesList = response.getBody();
         assertTrue((responsePiecesList.containsAll(pieces) && pieces.containsAll(responsePiecesList)));
 
     }
 
-   /* @Test
-    public void whenGetFilterPiecesWithoutPathVariable_thenReturn404() throws Exception {
-       // ResponseEntity<List<Piece>> response = getPieceResponseEntity("/lessThan/",HttpMethod.GET);
-       // assertEquals(HttpStatus.valueOf(404), response.getStatusCode());
-        this.mockMvc.perform(MockMvcRequestBuilders.delete("/lessThan")).andExpect(status().isNotFound());
-
-    }*/
+    @Test
+    public void whenGetFilterPiecesWithoutPathVariable_thenReturn404() {
+        HttpClientErrorException response = assertThrows(HttpClientErrorException.class, () -> executePieceRequest("/lessThan/", HttpMethod.GET));
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
 
     @Test
     public void whenGetFilterPiecesWithPriceLessThanAll_thenReturn200And0Elements() {
@@ -82,7 +76,7 @@ public class RestControllerTest {
                 new Piece("Motor Otto", "General Motors", 450));
         piecesRepository.saveAll(pieces);
 
-        ResponseEntity<List<Piece>> response = getPieceResponseEntity("/lessThan/200",HttpMethod.GET);
+        ResponseEntity<List<Piece>> response = executePieceRequest("/lessThan/200", HttpMethod.GET);
         assertEquals(HttpStatus.valueOf(200), response.getStatusCode());
         List<Piece> responsePiecesList = response.getBody();
         assertEquals(0,responsePiecesList.size());
@@ -97,7 +91,7 @@ public class RestControllerTest {
                 new Piece("Motor Otto", "General Motors", 450));
         piecesRepository.saveAll(pieces);
 
-        ResponseEntity<List<Piece>> response = getPieceResponseEntity("/lessThan/500",HttpMethod.GET);
+        ResponseEntity<List<Piece>> response = executePieceRequest("/lessThan/500", HttpMethod.GET);
         assertEquals(HttpStatus.valueOf(200), response.getStatusCode());
         List<Piece> responsePiecesList = response.getBody();
 
@@ -115,7 +109,7 @@ public class RestControllerTest {
                 new Piece("Motor Otto", "General Motors", 450));
         piecesRepository.saveAll(pieces);
 
-        ResponseEntity<List<Piece>> response = getPieceResponseEntity("/lessThan/700",HttpMethod.GET);
+        ResponseEntity<List<Piece>> response = executePieceRequest("/lessThan/700", HttpMethod.GET);
         assertEquals(HttpStatus.valueOf(200), response.getStatusCode());
 
         List<Piece> responsePiecesList = response.getBody();
@@ -124,13 +118,11 @@ public class RestControllerTest {
 
     }
 
- /*   @Test
+    @Test
     public void whenRemovePieceWithoutPathVariable_thenReturn404() throws Exception {
-        //ResponseEntity<List<Piece>> response = getPieceResponseEntity("/remove",HttpMethod.DELETE);
-        //assertEquals(HttpStatus.valueOf(404), response.getStatusCode());
-        this.mockMvc.perform(MockMvcRequestBuilders.delete("/remove")).andExpect(status().isNotFound());
-
-    }*/
+        HttpClientErrorException response = assertThrows(HttpClientErrorException.class, () -> executePieceRequest("/remove", HttpMethod.DELETE));
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
 
     @Test
     public void whenRemovePieceWithIdInDB_thenReturn202AndCorrectResponseBody() {
@@ -139,7 +131,7 @@ public class RestControllerTest {
                 new Piece("Motor Otto", "General Motors", 450));
         piecesRepository.saveAll(pieces);
 
-        ResponseEntity<List<Piece>> response = getPieceResponseEntity("/remove/"+ pieces.get(0).getId(),HttpMethod.DELETE);
+        ResponseEntity<List<Piece>> response = executePieceRequest("/remove/" + pieces.get(0).getId(), HttpMethod.DELETE);
         List<Piece> expectedList = new ArrayList<>();
         expectedList.add(pieces.get(1));
         expectedList.add(pieces.get(2));
@@ -155,10 +147,6 @@ public class RestControllerTest {
                 new Piece("Motor Diesel", "Bosch", 550),
                 new Piece("Motor Otto", "General Motors", 450));
         piecesRepository.saveAll(pieces);
-        assertThrows(NestedServletException.class,
-                () -> {
-                    this.mockMvc.perform(MockMvcRequestBuilders.delete("/remove/50"));
-        });
 
     }
 
@@ -174,8 +162,8 @@ public class RestControllerTest {
 */
 
 
-    private ResponseEntity<List<Piece>> getPieceResponseEntity(String url,HttpMethod method) {
-        return testRestTemplate.exchange(url, method, null, new ParameterizedTypeReference<List<Piece>>() {
+    private ResponseEntity<List<Piece>> executePieceRequest(String url, HttpMethod method) {
+        return restTemplate.exchange(serverUrl + url, method, null, new ParameterizedTypeReference<List<Piece>>() {
         });
 
     }
