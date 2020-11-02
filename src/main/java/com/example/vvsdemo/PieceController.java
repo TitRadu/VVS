@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/")
 public class PieceController {
     private PieceService pieceService;
 
@@ -28,7 +27,7 @@ public class PieceController {
 
     }
 
-    @RequestMapping(value = "remove/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/remove/{id}", method = RequestMethod.DELETE)
     public List<Piece> removePiece(@PathVariable long id){
         pieceService.remove(id);
 

@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -64,12 +65,6 @@ public class RestControllerTest {
     }
 
     @Test
-    public void whenGetFilterPiecesWithoutPathVariable_thenReturn404() {
-        HttpClientErrorException response = assertThrows(HttpClientErrorException.class, () -> executePieceRequest("/lessThan/", HttpMethod.GET));
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-    }
-
-    @Test
     public void whenGetFilterPiecesWithPriceLessThanAll_thenReturn200And0Elements() {
         List<Piece> pieces = Arrays.asList(new Piece("Motor electric", "Ford", 500),
                 new Piece("Motor Diesel", "Bosch", 550),
@@ -80,7 +75,6 @@ public class RestControllerTest {
         assertEquals(HttpStatus.valueOf(200), response.getStatusCode());
         List<Piece> responsePiecesList = response.getBody();
         assertEquals(0,responsePiecesList.size());
-
 
     }
 
@@ -119,9 +113,10 @@ public class RestControllerTest {
     }
 
     @Test
-    public void whenRemovePieceWithoutPathVariable_thenReturn404() throws Exception {
-        HttpClientErrorException response = assertThrows(HttpClientErrorException.class, () -> executePieceRequest("/remove", HttpMethod.DELETE));
+    public void whenGetFilterPiecesWithoutPathVariable_thenReturn404() {
+        HttpClientErrorException response = assertThrows(HttpClientErrorException.class, () -> executePieceRequest("/lessThan", HttpMethod.GET));
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+
     }
 
     @Test
@@ -142,25 +137,47 @@ public class RestControllerTest {
     }
 
     @Test
-    public void whenRemovePieceWithIdNotInDB_thenException() throws Exception {
+    public void whenRemovePieceWithoutPathVariable_thenReturn404() throws Exception {
+        HttpClientErrorException response = assertThrows(HttpClientErrorException.class, () -> executePieceRequest("/remove", HttpMethod.DELETE));
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+
+    }
+
+    @Test
+    public void whenRemovePieceWithIdNotInDB_then500() throws Exception {
         List<Piece> pieces = Arrays.asList(new Piece("Motor electric", "Ford", 500),
                 new Piece("Motor Diesel", "Bosch", 550),
                 new Piece("Motor Otto", "General Motors", 450));
         piecesRepository.saveAll(pieces);
 
+        HttpServerErrorException response = assertThrows(HttpServerErrorException.class, () -> executePieceRequest("/remove/500", HttpMethod.DELETE));
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+
     }
 
-  /*  @Test
-    public void test(){
+    @Test
+    public void whenRemovePieceWithIdInDBGetMethod_then405(){
         List<Piece> pieces = Arrays.asList(new Piece("Motor electric", "Ford", 500),
                 new Piece("Motor Diesel", "Bosch", 550),
                 new Piece("Motor Otto", "General Motors", 450));
         piecesRepository.saveAll(pieces);
-        ResponseEntity<List<Piece>> response = getPieceResponseEntity("/remove/"+ pieces.get(0).getId() ,HttpMethod.GET);
+
+        HttpClientErrorException response = assertThrows(HttpClientErrorException.class, () -> executePieceRequest("/remove/"+pieces.get(0).getId(), HttpMethod.GET));
+        assertEquals(HttpStatus.METHOD_NOT_ALLOWED, response.getStatusCode());
 
     }
-*/
 
+    @Test
+    public void whenRemovePieceWithNotInDBGetMethod_then405(){
+        List<Piece> pieces = Arrays.asList(new Piece("Motor electric", "Ford", 500),
+                new Piece("Motor Diesel", "Bosch", 550),
+                new Piece("Motor Otto", "General Motors", 450));
+        piecesRepository.saveAll(pieces);
+
+        HttpClientErrorException response = assertThrows(HttpClientErrorException.class, () -> executePieceRequest("/remove/500", HttpMethod.GET));
+        assertEquals(HttpStatus.METHOD_NOT_ALLOWED, response.getStatusCode());
+
+    }
 
     private ResponseEntity<List<Piece>> executePieceRequest(String url, HttpMethod method) {
         return restTemplate.exchange(serverUrl + url, method, null, new ParameterizedTypeReference<List<Piece>>() {
