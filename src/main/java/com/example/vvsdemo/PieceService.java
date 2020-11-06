@@ -20,13 +20,21 @@ public class PieceService {
 
     }
 
-    public List<Piece> listFilter(double price){
+    public List<Piece> listFilter(Double price) throws NegativeInputException {
+        if (price <= 0) {
+            throw new NegativeInputException();
+        }
+
         return piecesRepository.findByPriceLessThan(price);
 
     }
 
-    public void add(Piece entity){
-        piecesRepository.save(entity);
+    public Piece add(Piece entity) throws NegativeInputException {
+        if (entity.getPrice() <= 0) {
+            throw new NegativeInputException();
+        }
+
+        return piecesRepository.save(entity);
 
     }
 

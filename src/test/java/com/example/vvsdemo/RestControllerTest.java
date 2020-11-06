@@ -179,6 +179,13 @@ public class RestControllerTest {
 
     }
 
+    @Test
+    public void test(){
+        HttpServerErrorException response = assertThrows(HttpServerErrorException.class, () -> executePieceRequest("/lessThan/-500", HttpMethod.GET));
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+
+    }
+
     private ResponseEntity<List<Piece>> executePieceRequest(String url, HttpMethod method) {
         return restTemplate.exchange(serverUrl + url, method, null, new ParameterizedTypeReference<List<Piece>>() {
         });

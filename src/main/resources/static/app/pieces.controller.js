@@ -36,6 +36,13 @@
         function listFilterPieces(){
             var price;
             price = document.getElementById("affordablePrice").value;
+
+            if (price < 0.0) {
+
+                alert('Introduceti un pret valid!');
+                return;
+            }
+
             var url="lessThan/" + price;
             var piecesPromise = $http.get(url);
             piecesPromise.then(function(response){

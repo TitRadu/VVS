@@ -35,14 +35,22 @@ public class ViewController {
         model.addAttribute("piece",piece);
         model.addAttribute("datetime",new Date());
         model.addAttribute("username","Tit Radu-Dorin");
+        model.addAttribute("priceWarning", "invisible");
         return "new_piece";
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String addPiece(@ModelAttribute("piece") Piece piece){
-        pieceService.add(piece);
+    public String addPiece(@ModelAttribute("piece") Piece piece, Model model){
+        try {
+            pieceService.add(piece);
+        } catch (NegativeInputException e) {
+
+        } catch(NullPointerException e)  {
+
+        }
 
         return "redirect:/";
+
     }
 
 }

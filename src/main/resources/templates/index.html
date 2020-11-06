@@ -13,7 +13,7 @@
     <nav class="navbar navbar-default" style="background-color: #f0ad4e">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="a">AutoStore Demo</a>
+                <a class="navbar-brand" >AutoStore Demo</a>
             </div>
             <p class="navbar-text navbar-right" th:text="'Signed in as ' + ${username}" style="margin-right: 10px">Signed in as Anonymous</p>
         </div>
@@ -29,7 +29,9 @@
             <div class="btn-group" role="group">
                 <button ng-click="vm.listAllPieces()" type="button" class="btn btn-default">All</button>
                 <button ng-click="vm.listFilterPieces()" type="button" class="btn btn-default">Affordable</button>
-                <input type="text" class="btn btn-default" th:id="affordablePrice"/>
+                <label>
+                    <input type="text" class="btn btn-default" th:id="affordablePrice"/>
+                </label>
             </div>
 
             <table class="table">
