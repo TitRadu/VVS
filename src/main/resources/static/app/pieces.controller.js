@@ -34,13 +34,34 @@
         }
 
         function listFilterPieces(){
-            var price;
-            price = document.getElementById("affordablePrice").value;
+            var price = document.getElementById("affordablePrice").value;
+            var priceWarning = document.getElementById("priceWarning");
+            var regex = /^[0-9]+\.?[0-9]*$/i;
 
-            if (price < 0.0) {
+            if(!price.replace(/\s/g, '').length){
+                priceWarning.innerHTML = "Please introduce a price!";
+                return false;
+            }else{
+                priceWarning.innerHTML = null;
 
-                alert('Introduceti un pret valid!');
-                return;
+            }
+
+            if(price <= 0){
+                priceWarning.innerHTML = "Please introduce a non-negative price!";
+                return false;
+
+            }else{
+                priceWarning.innerHTML = null;
+
+            }
+
+            if(!regex.test(price)){
+                priceWarning.innerHTML = "Please introduce a valid price!";
+                return false;
+
+            }else{
+                priceWarning.innerHTML = null;
+
             }
 
             var url="lessThan/" + price;

@@ -40,7 +40,7 @@ public class ViewController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String addPiece(@ModelAttribute("piece") Piece piece, Model model){
+    public String addPiece(@ModelAttribute("piece") Piece piece){
         try {
             pieceService.add(piece);
         } catch (NegativeInputException e) {

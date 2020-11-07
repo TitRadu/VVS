@@ -113,6 +113,21 @@ public class RestControllerTest {
     }
 
     @Test
+    public void whenGetFilterPiecesWithNegativePrice_then200AndEmptyBody(){
+        ResponseEntity<List<Piece>> response = executePieceRequest("/lessThan/-500", HttpMethod.GET);
+        assertEquals(HttpStatus.valueOf(200),response.getStatusCode());
+        assertEquals(null,response.getBody());
+
+    }
+
+    @Test
+    public void whenGetFilterPiecesWithStringPrice_then400(){
+        HttpClientErrorException response = assertThrows(HttpClientErrorException.class, () -> executePieceRequest("/lessThan/aaa", HttpMethod.GET));
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+
+    }
+
+    @Test
     public void whenGetFilterPiecesWithoutPathVariable_thenReturn404() {
         HttpClientErrorException response = assertThrows(HttpClientErrorException.class, () -> executePieceRequest("/lessThan", HttpMethod.GET));
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -176,13 +191,6 @@ public class RestControllerTest {
 
         HttpClientErrorException response = assertThrows(HttpClientErrorException.class, () -> executePieceRequest("/remove/500", HttpMethod.GET));
         assertEquals(HttpStatus.METHOD_NOT_ALLOWED, response.getStatusCode());
-
-    }
-
-    @Test
-    public void test(){
-        HttpServerErrorException response = assertThrows(HttpServerErrorException.class, () -> executePieceRequest("/lessThan/-500", HttpMethod.GET));
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
 
     }
 

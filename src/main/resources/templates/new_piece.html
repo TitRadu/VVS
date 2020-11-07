@@ -27,14 +27,14 @@
                     <td><label>
                         <input th:id="pieceName" type="text" th:field="*{pieceName}"/>
                     </label></td>
-                    <td><p th:id="pieceNameWarning"></p></td>
+                    <td><p th:id="pieceNameWarning" style="color: #ac2925"></p></td>
                 </tr>
                 <tr>
                     <td>Producer:</td>
                     <td><label>
                         <input th:id="producer" type="text" th:field="*{producer}"/>
                     </label></td>
-                    <td><p th:id="producerWarning"></p></td>
+                    <td><p th:id="producerWarning" style="color: #ac2925"></p></td>
                 </tr>
                 <tr>
                     <td>Price:</td>
@@ -43,7 +43,7 @@
                         <input th:id="price" type="text" th:field="*{price}"/>
                         </label>
                     </td>
-                    <td><p th:id="priceWarning"></p></td>
+                    <td><p th:id="priceWarning" style="color: #ac2925"></p></td>
                 </tr>
                 <tr>
                     <td colspan="2"><button type="submit">Save</button></td>
@@ -66,14 +66,12 @@
             var pieceNameWarning = document.getElementById("pieceNameWarning");
             var producerWarning = document.getElementById("producerWarning");
             var priceWarning = document.getElementById("priceWarning");
-
-            var regex = /$[0-9]^/i;
-
-            console.log(price);
+            var formCheck = true;
+            var regex = /^[0-9]+\.?[0-9]*$/i;
 
             if(!pieceName.replace(/\s/g, '').length){
                 pieceNameWarning.innerHTML = "Please introduce a piece name!";
-                return false;
+                formCheck = false;
             }else{
                 pieceNameWarning.innerHTML = "";
 
@@ -81,7 +79,7 @@
 
             if(!producer.replace(/\s/g, '').length){
                 producerWarning.innerHTML = "Please introduce a producer!";
-                return false;
+                formCheck = false;
             }else{
                 producerWarning.innerHTML = "";
 
@@ -89,7 +87,7 @@
 
             if(!price.replace(/\s/g, '').length){
                 priceWarning.innerHTML = "Please introduce a price!";
-                return false;
+                formCheck = false;
 
             }else{
                 priceWarning.innerHTML = "";
@@ -98,7 +96,7 @@
 
             if(price <= 0){
                 priceWarning.innerHTML = "Please introduce a non-negative price!";
-                return false;
+                formCheck = false;
 
             }else{
                 priceWarning.innerHTML = "";
@@ -107,13 +105,14 @@
 
             if(!regex.test(price)){
                 priceWarning.innerHTML = "Please introduce a valid price!";
-                return false;
+                formCheck = false;
 
             }else{
                 priceWarning.innerHTML = "";
 
             }
 
+            return formCheck;
         }
 
     </script>

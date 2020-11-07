@@ -22,8 +22,16 @@ public class PieceController {
     }
 
     @RequestMapping(value = "/lessThan/{price}", method = RequestMethod.GET)
-    public List<Piece> listFilterPieces(@PathVariable double price) throws NegativeInputException {
-       return pieceService.listFilter(price);
+    public List<Piece> listFilterPieces(@PathVariable double price) {
+        try {
+            return pieceService.listFilter(price);
+
+        } catch (NegativeInputException e) {
+            e.printStackTrace();
+
+        }
+
+        return null;
 
     }
 

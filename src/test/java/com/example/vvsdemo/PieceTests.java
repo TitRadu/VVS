@@ -26,14 +26,14 @@ public class PieceTests {
     }
 
     @Test
-    public void testFindAllPiecesWhenDBIsEmpty(){
+    public void testListAllPiecesWhenDBIsEmpty(){
         List<Piece> pieces = pieceService.listAll();
         assertEquals(0,pieces.size());
 
     }
 
     @Test
-    public void testFindAllPiecesWhenDBIsNotEmpty(){
+    public void testListAllPiecesWhenDBIsNotEmpty(){
         List<Piece> pieces = new ArrayList<>();
 
         pieces.add(new Piece("Motor electric","Ford",500.0));
@@ -48,7 +48,7 @@ public class PieceTests {
 
 
     @Test
-    public void testSavePieceWhenDBIsEmpty() throws NegativeInputException {
+    public void testAddPieceWhenDBIsEmpty() throws NegativeInputException {
         Piece piece = new Piece("Ulei motor","Castrol",100.50);
         Piece addedPiece = null;
         addedPiece = pieceService.add(piece);
@@ -60,7 +60,7 @@ public class PieceTests {
     }
 
     @Test
-    public void testSavePieceWhenDBIsNotEmpty() {
+    public void testAddPieceWhenDBIsNotEmpty() throws NegativeInputException {
         List<Piece> pieces = new ArrayList<>();
 
         pieces.add(new Piece("Motor electric","Ford",500.0));
@@ -70,14 +70,22 @@ public class PieceTests {
 
         Piece piece = new Piece("Ulei motor", "Castrol", 100.50);
         pieces.add(piece);
-        piecesRepository.save(piece);
+        pieceService.add(piece);
         List<Piece> piecesList = pieceService.listAll();
         assertTrue((pieces.containsAll(piecesList) && piecesList.containsAll(pieces)));
 
     }
 
-        @Test
-    public void testFindByPriceLessThanWhenPriceIsLessThanAll() throws NegativeInputException {
+
+    @Test
+    public void testAddPieceWithNegativePrice(){
+        Piece piece = new Piece("Motor electric","Ford",-5.0);
+        assertThrows(NegativeInputException.class,() -> pieceService.add(piece));
+
+    }
+
+    @Test
+    public void testListFilterWhenPriceIsLessThanAll() throws NegativeInputException {
         List<Piece> pieces = new ArrayList<>();
 
         pieces.add(new Piece("Motor electric","Ford",500.0));
@@ -95,7 +103,7 @@ public class PieceTests {
     }
 
     @Test
-    public void testFindByPriceLessThanWhenPriceIsBigThanAll() throws NegativeInputException {
+    public void testListFilterWhenPriceIsBigThanAll() throws NegativeInputException {
         List<Piece> pieces = new ArrayList<>();
 
         pieces.add(new Piece("Motor electric","Ford",500.0));
@@ -113,7 +121,7 @@ public class PieceTests {
     }
 
     @Test
-    public void testFindByPriceLessThanWhenPriceIsInDataBase() throws NegativeInputException {
+    public void testListFilterWhenPriceIsInDataBase() throws NegativeInputException {
         List<Piece> pieces = new ArrayList<>();
 
         pieces.add(new Piece("Motor electric","Ford",500.0));
@@ -133,7 +141,13 @@ public class PieceTests {
     }
 
     @Test
-    public void testDeletePieceByIdWhenIdExist(){
+    public void testListFilterWithNegativePrice(){
+        assertThrows(NegativeInputException.class,() -> pieceService.listFilter(-5.0));
+
+    }
+
+    @Test
+    public void testRemovePieceWhenIdExist(){
         List<Piece> pieces = new ArrayList<>();
 
         pieces.add(new Piece("Motor electric","Ford",500.0));
@@ -153,7 +167,7 @@ public class PieceTests {
     }
 
     @Test
-    public void testDeletePieceByIdWhenIdNotExist(){
+    public void testRemovePieceWhenIdNotExist(){
         List<Piece> pieces = new ArrayList<>();
 
         pieces.add(new Piece("Motor electric","Ford",500));
@@ -166,20 +180,6 @@ public class PieceTests {
         assertThrows(EmptyResultDataAccessException.class, () -> {pieceService.remove(id);});
 
     }
-
-    @Test
-    public void testAddPieceWithNegativePrice(){
-        Piece piece = new Piece("Motor electric","Ford",-5.0);
-        assertThrows(NegativeInputException.class,() -> pieceService.add(piece));
-
-    }
-
-    @Test
-    public void testListFilterWithNegativePrice(){
-        assertThrows(NegativeInputException.class,() -> pieceService.listFilter(-5.0));
-
-    }
-
 
 }
 
