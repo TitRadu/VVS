@@ -45,7 +45,11 @@ public class ViewController {
             pieceService.add(piece);
         } catch (NegativeInputException e) {
 
+        }
+        catch (EmptyInputException e) {
+
         } catch(NullPointerException e)  {
+            //Daca input-ul pentru pret este gol sau contine doar spatii => Piece.price = null;
 
         }
 

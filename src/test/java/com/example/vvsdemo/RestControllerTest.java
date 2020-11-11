@@ -129,7 +129,7 @@ public class RestControllerTest {
 
     @Test
     public void whenGetFilterPiecesWithoutPathVariable_thenReturn404() {
-        HttpClientErrorException response = assertThrows(HttpClientErrorException.class, () -> executePieceRequest("/lessThan", HttpMethod.GET));
+        HttpClientErrorException response = assertThrows(HttpClientErrorException.class, () -> executePieceRequest("/lessThan/", HttpMethod.GET));
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
 
     }

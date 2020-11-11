@@ -22,7 +22,7 @@ public class PieceController {
     }
 
     @RequestMapping(value = "/lessThan/{price}", method = RequestMethod.GET)
-    public List<Piece> listFilterPieces(@PathVariable double price) {
+    public List<Piece> listFilterPieces(@PathVariable Double price){
         try {
             return pieceService.listFilter(price);
 

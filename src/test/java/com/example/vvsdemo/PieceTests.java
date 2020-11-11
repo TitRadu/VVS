@@ -48,7 +48,7 @@ public class PieceTests {
 
 
     @Test
-    public void testAddPieceWhenDBIsEmpty() throws NegativeInputException {
+    public void testAddPieceWhenDBIsEmpty() throws NegativeInputException, EmptyInputException {
         Piece piece = new Piece("Ulei motor","Castrol",100.50);
         Piece addedPiece = null;
         addedPiece = pieceService.add(piece);
@@ -60,7 +60,7 @@ public class PieceTests {
     }
 
     @Test
-    public void testAddPieceWhenDBIsNotEmpty() throws NegativeInputException {
+    public void testAddPieceWhenDBIsNotEmpty() throws NegativeInputException, EmptyInputException {
         List<Piece> pieces = new ArrayList<>();
 
         pieces.add(new Piece("Motor electric","Ford",500.0));

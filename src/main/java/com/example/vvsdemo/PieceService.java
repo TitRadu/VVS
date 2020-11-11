@@ -29,9 +29,20 @@ public class PieceService {
 
     }
 
-    public Piece add(Piece entity) throws NegativeInputException {
+    public Piece add(Piece entity) throws NegativeInputException, EmptyInputException {
+        if(entity.getPieceName().matches("^( )*$")){
+            throw new EmptyInputException();
+
+        }
+
+        if(entity.getProducer().matches("^( )*$")){
+            throw new EmptyInputException();
+
+        }
+
         if (entity.getPrice() <= 0) {
             throw new NegativeInputException();
+
         }
 
         return piecesRepository.save(entity);
