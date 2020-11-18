@@ -7,7 +7,7 @@ import java.util.List;
 
 @RestController
 public class PieceController {
-    private PieceService pieceService;
+    private final PieceService pieceService;
 
     @Autowired
     public PieceController(PieceService pieceService){

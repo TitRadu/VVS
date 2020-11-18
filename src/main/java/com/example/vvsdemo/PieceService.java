@@ -7,7 +7,7 @@ import java.util.List;
 
 @Service
 public class PieceService {
-    private PiecesRepository piecesRepository;
+    private final PiecesRepository piecesRepository;
 
     @Autowired
     public  PieceService(PiecesRepository piecesRepository){

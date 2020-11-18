@@ -1,0 +1,7 @@
+https://www.youtube.com/watch?v=SWcWY_CvoiM&list=PLVApX3evDwJ1i1KQYCcyS9hpSy_zOgU0Y -> playlist-ul ce sta la baza proiectului(primele 5 video).
+https://www.youtube.com/watch?v=QloyS2dt9T4&t=1749s -> inspiratie pentru adaugarea de obiecte in BD si testarea BD.
+https://github.com/adinarolea/vvs -> inspiratie testare Controller + RestController.
+https://stackoverflow.com/questions/25510083/cannot-deserialize-instance-of-object-out-of-start-array-token-in-spring-webserv?fbclid=IwAR1T4MinvGw2nuav_efg-vjLRg0aRlcqVt-3AUnX_b6DvYZb4-w06VFFxwk -> In testarea cu TestRestTemplate ca raspuns primeam un vector de elemente pentru deserealizare, nu un element.
+https://www.w3schools.com/html/default.asp
+https://www.w3schools.com/css/default.asp
+https://stackoverflow.com/questions/8664486/javascript-code-to-stop-form-submission -> cancel a form submit.

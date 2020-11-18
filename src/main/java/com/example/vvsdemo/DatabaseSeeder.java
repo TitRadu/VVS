@@ -9,7 +9,7 @@ import java.util.List;
 
 @Component
 public class DatabaseSeeder  implements CommandLineRunner {
-    private PiecesRepository piecesRepository;
+    private final PiecesRepository piecesRepository;
 
     @Autowired
     public DatabaseSeeder(PiecesRepository piecesRepository){

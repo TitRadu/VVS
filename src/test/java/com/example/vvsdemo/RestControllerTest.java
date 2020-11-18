@@ -33,7 +33,7 @@ public class RestControllerTest {
 
     private String serverUrl;
 
-    private RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate = new RestTemplate();
 
     @BeforeEach
     public void initServerURL() {
@@ -116,7 +116,7 @@ public class RestControllerTest {
     public void whenGetFilterPiecesWithNegativePrice_then200AndEmptyBody(){
         ResponseEntity<List<Piece>> response = executePieceRequest("/lessThan/-500", HttpMethod.GET);
         assertEquals(HttpStatus.valueOf(200),response.getStatusCode());
-        assertEquals(null,response.getBody());
+        assertNull(response.getBody());
 
     }
 

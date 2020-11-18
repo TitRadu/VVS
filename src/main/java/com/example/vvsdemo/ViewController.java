@@ -12,7 +12,7 @@ import java.util.Date;
 
 @Controller
 public class ViewController {
-    private PieceService pieceService;
+    private final PieceService pieceService;
 
     @Autowired
     public ViewController(PieceService pieceService){
@@ -43,10 +43,7 @@ public class ViewController {
     public String addPiece(@ModelAttribute("piece") Piece piece){
         try {
             pieceService.add(piece);
-        } catch (NegativeInputException e) {
-
-        }
-        catch (EmptyInputException e) {
+        } catch (NegativeInputException | EmptyInputException e) {
 
         } catch(NullPointerException e)  {
             //Daca input-ul pentru pret este gol sau contine doar spatii => Piece.price = null;

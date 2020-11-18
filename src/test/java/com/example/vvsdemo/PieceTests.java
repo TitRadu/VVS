@@ -41,7 +41,7 @@ public class PieceTests {
         pieces.add(new Piece("Motor Otto","General Motors",450.0));
         piecesRepository.saveAll(pieces);
 
-        List<Piece> piecesList = pieceService.listAll();;
+        List<Piece> piecesList = pieceService.listAll();
         assertTrue((pieces.containsAll(piecesList) && piecesList.containsAll(pieces)));
 
     }
@@ -50,7 +50,7 @@ public class PieceTests {
     @Test
     public void testAddPieceWhenDBIsEmpty() throws NegativeInputException, EmptyInputException {
         Piece piece = new Piece("Ulei motor","Castrol",100.50);
-        Piece addedPiece = null;
+        Piece addedPiece;
         addedPiece = pieceService.add(piece);
         List<Piece> pieces = pieceService.listAll();
         assertNotNull(addedPiece);
@@ -95,7 +95,7 @@ public class PieceTests {
         piecesRepository.saveAll(pieces);
 
         double price = 300;
-        List<Piece> piecesList = null;
+        List<Piece> piecesList;
         piecesList = pieceService.listFilter(price);
 
         assertEquals(0,piecesList.size());
@@ -113,7 +113,7 @@ public class PieceTests {
         piecesRepository.saveAll(pieces);
 
         double price = 600;
-        List<Piece> piecesList = null;
+        List<Piece> piecesList;
         piecesList = pieceService.listFilter(price);
 
         assertTrue((pieces.containsAll(piecesList) && piecesList.containsAll(pieces)));
@@ -131,7 +131,7 @@ public class PieceTests {
         piecesRepository.saveAll(pieces);
 
         double price = 500;
-        List<Piece> piecesList = null;
+        List<Piece> piecesList;
         piecesList = pieceService.listFilter(price);
 
         pieces.remove(0);
@@ -176,7 +176,7 @@ public class PieceTests {
 
         piecesRepository.saveAll(pieces);
 
-        Long id = new Long(50);
+        Long id = 50L;
         assertThrows(EmptyResultDataAccessException.class, () -> {pieceService.remove(id);});
 
     }

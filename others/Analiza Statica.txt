@@ -1,0 +1,7 @@
+1. Java -> Test frameworks -> Simplifiable assertion -> assertEquals() can be simplified to assertNull();
+2. Java -> Probable bugs -> Unused assignment -> Variable x initializer 'null' is redundant.
+3. Java -> Error handling ->Catch block may ignore exception.
+4. Java -> Probable bugs -> Constant conditions & exceptions -> Method invocation x may produce 'NullPointerException'.
+5. Java -> Code style issues -> Field may be 'final'.
+6. Java -> Declaration redundancy -> Method returns the same value.
+7. Java -> Java language level migration aids.
