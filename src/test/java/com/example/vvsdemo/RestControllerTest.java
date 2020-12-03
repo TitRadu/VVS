@@ -1,5 +1,7 @@
 package com.example.vvsdemo;
 
+import com.example.vvsdemo.entities.Piece;
+import com.example.vvsdemo.repositories.PiecesRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -113,10 +115,9 @@ public class RestControllerTest {
     }
 
     @Test
-    public void whenGetFilterPiecesWithNegativePrice_then200AndEmptyBody(){
-        ResponseEntity<List<Piece>> response = executePieceRequest("/lessThan/-500", HttpMethod.GET);
-        assertEquals(HttpStatus.valueOf(200),response.getStatusCode());
-        assertNull(response.getBody());
+    public void whenGetFilterPiecesWithNegativePrice_then400(){
+        HttpClientErrorException response = assertThrows(HttpClientErrorException.class, () -> executePieceRequest("/lessThan/-500", HttpMethod.GET));
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
 
     }
 
@@ -152,21 +153,21 @@ public class RestControllerTest {
     }
 
     @Test
-    public void whenRemovePieceWithoutPathVariable_thenReturn404() throws Exception {
+    public void whenRemovePieceWithoutPathVariable_thenReturn404(){
         HttpClientErrorException response = assertThrows(HttpClientErrorException.class, () -> executePieceRequest("/remove", HttpMethod.DELETE));
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
 
     }
 
     @Test
-    public void whenRemovePieceWithIdNotInDB_then500() throws Exception {
+    public void whenRemovePieceWithIdNotInDB_then404(){
         List<Piece> pieces = Arrays.asList(new Piece("Motor electric", "Ford", 500),
                 new Piece("Motor Diesel", "Bosch", 550),
                 new Piece("Motor Otto", "General Motors", 450));
         piecesRepository.saveAll(pieces);
 
-        HttpServerErrorException response = assertThrows(HttpServerErrorException.class, () -> executePieceRequest("/remove/500", HttpMethod.DELETE));
-        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        HttpClientErrorException response = assertThrows(HttpClientErrorException.class, () -> executePieceRequest("/remove/500", HttpMethod.DELETE));
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
 
     }
 
@@ -178,18 +179,6 @@ public class RestControllerTest {
         piecesRepository.saveAll(pieces);
 
         HttpClientErrorException response = assertThrows(HttpClientErrorException.class, () -> executePieceRequest("/remove/"+pieces.get(0).getId(), HttpMethod.GET));
-        assertEquals(HttpStatus.METHOD_NOT_ALLOWED, response.getStatusCode());
-
-    }
-
-    @Test
-    public void whenRemovePieceWithNotInDBGetMethod_then405(){
-        List<Piece> pieces = Arrays.asList(new Piece("Motor electric", "Ford", 500),
-                new Piece("Motor Diesel", "Bosch", 550),
-                new Piece("Motor Otto", "General Motors", 450));
-        piecesRepository.saveAll(pieces);
-
-        HttpClientErrorException response = assertThrows(HttpClientErrorException.class, () -> executePieceRequest("/remove/500", HttpMethod.GET));
         assertEquals(HttpStatus.METHOD_NOT_ALLOWED, response.getStatusCode());
 
     }

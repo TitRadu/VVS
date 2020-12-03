@@ -1,5 +1,6 @@
 package com.example.vvsdemo;
 
+import com.example.vvsdemo.controllers.PieceController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

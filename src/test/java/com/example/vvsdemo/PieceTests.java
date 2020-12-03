@@ -1,10 +1,15 @@
 package com.example.vvsdemo;
 
+import com.example.vvsdemo.entities.Piece;
+import com.example.vvsdemo.exceptions.EmptyInputException;
+import com.example.vvsdemo.exceptions.ResourceNotFoundDeleteException;
+import com.example.vvsdemo.exceptions.NegativeInputException;
+import com.example.vvsdemo.repositories.PiecesRepository;
+import com.example.vvsdemo.services.PieceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,6 +90,21 @@ public class PieceTests {
     }
 
     @Test
+    public void testAddPieceWithEmptyName(){
+        Piece piece = new Piece("","Ford",-5.0);
+        assertThrows(EmptyInputException.class,() -> pieceService.add(piece));
+
+    }
+
+    @Test
+    public void testAddPieceWithEmptyProducer(){
+        Piece piece = new Piece("Motor electric","       ",-5.0);
+        assertThrows(EmptyInputException.class,() -> pieceService.add(piece));
+
+    }
+
+
+    @Test
     public void testListFilterWhenPriceIsLessThanAll() throws NegativeInputException {
         List<Piece> pieces = new ArrayList<>();
 
@@ -147,7 +167,7 @@ public class PieceTests {
     }
 
     @Test
-    public void testRemovePieceWhenIdExist(){
+    public void testRemovePieceWhenIdExist() throws ResourceNotFoundDeleteException {
         List<Piece> pieces = new ArrayList<>();
 
         pieces.add(new Piece("Motor electric","Ford",500.0));
@@ -177,7 +197,7 @@ public class PieceTests {
         piecesRepository.saveAll(pieces);
 
         Long id = 50L;
-        assertThrows(EmptyResultDataAccessException.class, () -> {pieceService.remove(id);});
+        assertThrows(ResourceNotFoundDeleteException.class, () -> {pieceService.remove(id);});
 
     }
 

@@ -1,5 +1,7 @@
 package com.example.vvsdemo;
 
+import com.example.vvsdemo.entities.Piece;
+import com.example.vvsdemo.repositories.PiecesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

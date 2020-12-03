@@ -1,4 +1,4 @@
-package com.example.vvsdemo;
+package com.example.vvsdemo.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

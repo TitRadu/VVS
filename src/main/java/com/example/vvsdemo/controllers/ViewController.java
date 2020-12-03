@@ -1,5 +1,9 @@
-package com.example.vvsdemo;
+package com.example.vvsdemo.controllers;
 
+import com.example.vvsdemo.services.PieceService;
+import com.example.vvsdemo.entities.Piece;
+import com.example.vvsdemo.exceptions.EmptyInputException;
+import com.example.vvsdemo.exceptions.NegativeInputException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,15 +44,8 @@ public class ViewController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String addPiece(@ModelAttribute("piece") Piece piece){
-        try {
-            pieceService.add(piece);
-        } catch (NegativeInputException | EmptyInputException e) {
-
-        } catch(NullPointerException e)  {
-            //Daca input-ul pentru pret este gol sau contine doar spatii => Piece.price = null;
-
-        }
+    public String addPiece(@ModelAttribute("piece") Piece piece) throws EmptyInputException, NegativeInputException {
+        pieceService.add(piece);
 
         return "redirect:/";
 

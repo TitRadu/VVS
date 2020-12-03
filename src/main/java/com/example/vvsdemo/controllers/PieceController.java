@@ -1,5 +1,9 @@
-package com.example.vvsdemo;
+package com.example.vvsdemo.controllers;
 
+import com.example.vvsdemo.exceptions.ResourceNotFoundDeleteException;
+import com.example.vvsdemo.services.PieceService;
+import com.example.vvsdemo.entities.Piece;
+import com.example.vvsdemo.exceptions.NegativeInputException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,21 +26,13 @@ public class PieceController {
     }
 
     @RequestMapping(value = "/lessThan/{price}", method = RequestMethod.GET)
-    public List<Piece> listFilterPieces(@PathVariable Double price){
-        try {
-            return pieceService.listFilter(price);
-
-        } catch (NegativeInputException e) {
-            e.printStackTrace();
-
-        }
-
-        return null;
+    public List<Piece> listFilterPieces(@PathVariable Double price) throws NegativeInputException {
+        return pieceService.listFilter(price);
 
     }
 
     @RequestMapping(value = "/remove/{id}", method = RequestMethod.DELETE)
-    public List<Piece> removePiece(@PathVariable long id){
+    public List<Piece> removePiece(@PathVariable long id) throws ResourceNotFoundDeleteException {
         pieceService.remove(id);
 
         return pieceService.listAll();

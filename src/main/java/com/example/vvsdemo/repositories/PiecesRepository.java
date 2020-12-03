@@ -1,5 +1,6 @@
-package com.example.vvsdemo;
+package com.example.vvsdemo.repositories;
 
+import com.example.vvsdemo.entities.Piece;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
