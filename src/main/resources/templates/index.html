@@ -20,7 +20,7 @@
     </nav>
 </header>
 <div align="center">
-    <a href="new">Create New Product</a>
+    <a th:id="newPieceHref" href="new">Create New Product</a>
     <br/><br/>
 </div>
 <div>
@@ -28,9 +28,9 @@
         <div class="col-lg-offset-2 col-lg-8">
             <div class="btn-group" role="group">
                 <button ng-click="vm.listAllPieces()" type="button" class="btn btn-default">All</button>
-                <button ng-click="vm.listFilterPieces()" type="button" class="btn btn-default">Affordable</button>
+                <button th:id="listFilterButton" ng-click="vm.listFilterPieces()" type="button" class="btn btn-default">Affordable</button>
                 <label>
-                    <input type="text" class="btn btn-default" th:id="affordablePrice"/>
+                    <input type="text" class="btn btn-default" th:id="affordablePriceInput"/>
                 </label>
                 <p th:id="priceWarning" style="color: #ac2925"> </p>
             </div>

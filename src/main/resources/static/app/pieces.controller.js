@@ -34,7 +34,7 @@
         }
 
         function listFilterPieces(){
-            var price = document.getElementById("affordablePrice").value;
+            var price = document.getElementById("affordablePriceInput").value;
             var priceWarning = document.getElementById("priceWarning");
             var regex = /^[0-9]+\.?[0-9]*$/i;
 
@@ -47,7 +47,7 @@
             }
 
             if(price <= 0){
-                priceWarning.innerHTML = "Please introduce a non-negative price!";
+                priceWarning.innerHTML = "Please introduce a price higher than 0!";
                 return false;
 
             }else{
