@@ -37,14 +37,6 @@ public class ViewControllerTest {
     }
 
     @Test
-    @DisplayName("SavePage -> status 302")
-    public void whenPostAddUrl_then302() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.post("/add")).andExpect(status().isFound())
-                .andExpect(view().name("redirect:/"));
-
-    }
-
-    @Test
     @DisplayName("GetSavePage -> status 405")
     public void whenGetAddUrl_then405() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders.get("/add")).andExpect(status().isMethodNotAllowed());

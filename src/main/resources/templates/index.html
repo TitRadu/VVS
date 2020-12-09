@@ -27,7 +27,7 @@
     <div class="row">
         <div class="col-lg-offset-2 col-lg-8">
             <div class="btn-group" role="group">
-                <button ng-click="vm.listAllPieces()" type="button" class="btn btn-default">All</button>
+                <button th:id="listAllButton" ng-click="vm.listAllPieces()" type="button" class="btn btn-default">All</button>
                 <button th:id="listFilterButton" ng-click="vm.listFilterPieces()" type="button" class="btn btn-default">Affordable</button>
                 <label>
                     <input type="text" class="btn btn-default" th:id="affordablePriceInput"/>
@@ -46,13 +46,13 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="piece in vm.pieces">
-                    <td>{{piece.id}}</td>
-                    <td>{{piece.pieceName}}</td>
-                    <td>{{piece.producer}}</td>
-                    <td>{{piece.price}}</td>
+                <tr th:id="piecesList" ng-repeat="piece in vm.pieces">
+                    <td id="id{{$index}}">{{piece.id}}</td>
+                    <td id="pieceName{{$index}}">{{piece.pieceName}}</td>
+                    <td id="producer{{$index}}">{{piece.producer}}</td>
+                    <td id="price{{$index}}">{{piece.price}}</td>
                     <td>
-                        <button class="btn btn-danger" ng-click="vm.removePiece(piece.id)">Delete</button>
+                        <button id="{{$index}}" class="btn btn-danger" ng-click="vm.removePiece(piece.id)">Delete</button>
                     </td>
                 </tr>
                 </tbody>

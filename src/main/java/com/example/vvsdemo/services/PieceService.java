@@ -30,7 +30,7 @@ public class PieceService {
             throw new NegativeInputException("Price can not be negative or zero!");
         }
 
-        return piecesRepository.findByPriceLessThan(price);
+        return piecesRepository.findByPriceIsLessThanEqual(price);
 
     }
 

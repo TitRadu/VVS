@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface PiecesRepository extends JpaRepository<Piece, Long> {
-    List<Piece> findByPriceLessThan(double price);
+    List<Piece> findByPriceIsLessThanEqual(double price);
 
 
 }

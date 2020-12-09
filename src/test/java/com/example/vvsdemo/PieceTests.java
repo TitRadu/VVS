@@ -154,8 +154,7 @@ public class PieceTests {
         List<Piece> piecesList;
         piecesList = pieceService.listFilter(price);
 
-        pieces.remove(0);
-        pieces.remove(0);
+        pieces.remove(1);
         assertTrue((pieces.containsAll(piecesList) && piecesList.containsAll(pieces)));
 
     }

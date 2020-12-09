@@ -54,8 +54,8 @@ public class RestControllerTest {
 
     @Test
     public void whenGetAllPieces_thenReturn200AndCorrectResponse() {
-        List<Piece> pieces = Arrays.asList(new Piece("Motor electric", "Ford", 500),
-                new Piece("Motor Diesel", "Bosch", 550),
+        List<Piece> pieces = Arrays.asList(new Piece("Motor electric", "Ford", 500.25),
+                new Piece("Motor Diesel", "Bosch", 550.35),
                 new Piece("Motor Otto", "General Motors", 450));
         piecesRepository.saveAll(pieces);
 
@@ -68,8 +68,8 @@ public class RestControllerTest {
 
     @Test
     public void whenGetFilterPiecesWithPriceLessThanAll_thenReturn200And0Elements() {
-        List<Piece> pieces = Arrays.asList(new Piece("Motor electric", "Ford", 500),
-                new Piece("Motor Diesel", "Bosch", 550),
+        List<Piece> pieces = Arrays.asList(new Piece("Motor electric", "Ford", 500.25),
+                new Piece("Motor Diesel", "Bosch", 550.35),
                 new Piece("Motor Otto", "General Motors", 450));
         piecesRepository.saveAll(pieces);
 
@@ -82,16 +82,17 @@ public class RestControllerTest {
 
     @Test
     public void whenGetFilterPiecesWithPriceInDataBase_thenReturn200AndCorrectResponseBody() {
-        List<Piece> pieces = Arrays.asList(new Piece("Motor electric", "Ford", 500),
-                new Piece("Motor Diesel", "Bosch", 550),
+        List<Piece> pieces = Arrays.asList(new Piece("Motor electric", "Ford", 500.25),
+                new Piece("Motor Diesel", "Bosch", 550.35),
                 new Piece("Motor Otto", "General Motors", 450));
         piecesRepository.saveAll(pieces);
 
-        ResponseEntity<List<Piece>> response = executePieceRequest("/lessThan/500", HttpMethod.GET);
+        ResponseEntity<List<Piece>> response = executePieceRequest("/lessThan/500.25", HttpMethod.GET);
         assertEquals(HttpStatus.valueOf(200), response.getStatusCode());
         List<Piece> responsePiecesList = response.getBody();
 
         List<Piece> expectedList = new ArrayList<>();
+        expectedList.add(pieces.get(0));
         expectedList.add(pieces.get(2));
         assertTrue((responsePiecesList.containsAll(expectedList) && expectedList.containsAll(responsePiecesList)));
 
@@ -100,8 +101,8 @@ public class RestControllerTest {
 
     @Test
     public void whenGetFilterPiecesWithPriceBigThanAll_thenReturn200AndCorrectResponseBody() {
-        List<Piece> pieces = Arrays.asList(new Piece("Motor electric", "Ford", 500),
-                new Piece("Motor Diesel", "Bosch", 550),
+        List<Piece> pieces = Arrays.asList(new Piece("Motor electric", "Ford", 500.25),
+                new Piece("Motor Diesel", "Bosch", 550.35),
                 new Piece("Motor Otto", "General Motors", 450));
         piecesRepository.saveAll(pieces);
 
